@@ -1,0 +1,36 @@
+{
+    "manifest_version": 3,
+    "name": "Digital Advertisement ",
+    "description": "",
+    "version": "0.0.1",
+    "icons": {
+        "16": "logo/logo-16.png",
+        "48": "logo/logo-48.png",
+        "128": "logo/logo-128.png"
+    },
+    "options_page": "settings/settings.html",
+    "action": {
+        "default_title": "Chrome Addon v3 Starter",
+        "default_popup": "popup/popup.html"
+    },
+    "permissions": [      
+        "history",
+        "storage"
+    ],
+    "host_permissions": [
+        "*://*/*",
+        "http://www.google.com/",
+        "https://www.google.com/",
+        "<all_urls>"
+    ],
+    "background": {
+        "service_worker": "service-worker.js"
+    },
+    "content_scripts": [{
+        "js": ["foreground.js", "jquery-3.6.0.min.js"],
+        "matches": ["<all_urls>"]
+    }],
+    "content_security_policy": {
+        "extension_pages": "script-src 'self'; object-src 'self'; script-src-elem 'self' 'unsafe-inline' https://www.mackolik.com/;"
+    }
+}
