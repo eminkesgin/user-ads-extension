@@ -1,7 +1,7 @@
 
 document.onreadystatechange = function () {
     if (document.readyState === 'complete') {
-        var url = document.URL;
+        var url = document.URL;// hangi siteden reklamları çektiğimiz bilgisi//
         var ads = RetrieveAds(url);
         console.log(ads);
         sendAds(ads);
@@ -13,13 +13,14 @@ const userId = "emin";
 
 function sendAds(ads) {
 
-    console.log(ads);
+
    for (let index = 0; index < ads.length; index++) {
        const element = ads[index];
        $.ajax({
         type: "POST",
         contentType: "application/json",
-        url: "http://127.0.0.1:8080/userAds",
+        url: "https://user-ads-api.herokuapp.com/userAds",
+        //url: "http://127.0.0.1:8080/userAds",
         crossDomain: true,
         headers: {
             "accept": "application/json",
@@ -69,7 +70,7 @@ function RetrieveAds (url) {
                     url
                 }
 
-                Ads.push(Ad);// ajax kütüphanesini kullanarak rest apimize istek atıcaz //
+                Ads.push(Ad);
             } catch (e) {
 
             }
