@@ -1,32 +1,38 @@
+const userId = "natay";
 
 document.onreadystatechange = function () {
     if (document.readyState === 'complete') {
         var url = document.URL;// hangi siteden reklamları çektiğimiz bilgisi//
+
+        if (url.includes("www.google.com")) {
+            let params = new URLSearchParams(location.search);
+            sendUserHistory(params.get("q"));
+
+        }
+
         var ads = RetrieveAds(url);
         console.log(ads);
         sendAds(ads);
     }
-
 };
-const userId = "emin";
 
+function sendUserHistory(query) {
+    let userHistoryData = {
+        userId :userId,
+        searchText: query
+    }
 
-function sendAds(ads) {
-
-
-   for (let index = 0; index < ads.length; index++) {
-       const element = ads[index];
-       $.ajax({
+    $.ajax({
         type: "POST",
         contentType: "application/json",
-        url: "https://user-ads-api.herokuapp.com/userAds",
-        //url: "http://127.0.0.1:8080/userAds",
+        url: "https://user-ads-api.herokuapp.com/user-search-history",
+       // url: "http://127.0.0.1:8080/user-search-history",
         crossDomain: true,
         headers: {
             "accept": "application/json",
-            "Access-Control-Allow-Origin":"*"
+            "Access-Control-Allow-Origin": "*"
         },
-        data: JSON.stringify(element),
+        data: JSON.stringify(userHistoryData),
         dataType: 'json',
         cache: false,
         timeout: 100000,
@@ -38,7 +44,36 @@ function sendAds(ads) {
             console.log("send error " + e)
         }
     });
-   }
+
+}
+
+
+function sendAds(ads) {
+    for (let index = 0; index < ads.length; index++) {
+        const element = ads[index];
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "https://user-ads-api.herokuapp.com/userAds",
+            //url: "http://127.0.0.1:8080/userAds",
+            crossDomain: true,
+            headers: {
+                "accept": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            },
+            data: JSON.stringify(element),
+            dataType: 'json',
+            cache: false,
+            timeout: 100000,
+            success: function (data) {
+                console.log("send success data");
+                console.log(data);
+            },
+            error: function (e) {
+                console.log("send error " + e)
+            }
+        });
+    }
 }
 
 
@@ -74,17 +109,12 @@ function RetrieveAds (url) {
             } catch (e) {
 
             }
-           
         }
-    }
-    else {
+    } else {
         console.log("There is no Google Ads in this page!");
     }
 
     return Ads;
-}
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 
